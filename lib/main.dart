@@ -1,13 +1,9 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_app/lift.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,10 +46,13 @@ class MyAppState extends ChangeNotifier {
   var favorites = <WordPair>[];
   var db = FirebaseFirestore.instance;
 
-  void updateFavorites(){
-    // TODO this shouldn't just save the whole thing again but it works for now
-    var data = {'favorites': favorites.map((f)=> f.toLowerCase().asString)};
-    db.collection('favorites').doc('current').set(data, SetOptions(merge: true));
+  void updateFavorites() {
+    // merges existing data
+    var data = {'favorites': favorites.map((f) => f.toLowerCase().asString)};
+    db
+        .collection('favorites')
+        .doc('current')
+        .set(data, SetOptions(merge: true));
   }
 
   void toggleFavorite() {
@@ -69,13 +68,8 @@ class MyAppState extends ChangeNotifier {
         print('${doc.id} => ${doc.data()}');
       }
     });
-
-
     notifyListeners();
   }
-
-
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -84,7 +78,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   var selectedIndex = 0;
 
   late FirebaseFirestore firestore;
@@ -105,47 +98,45 @@ class _MyHomePageState extends State<MyHomePage> {
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          body: Row(
-            children: [
-              SafeArea(
-                child: NavigationRail(
-                  extended: constraints.maxWidth >= 600,
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: Icon(Icons.home),
-                      label: Text('Home'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.favorite),
-                      label: Text('Favorites'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.sports_gymnastics),
-                      label: Text('Create lifts'),
-                    ),
-                  ],
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                    });
-                  },
-                ),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Scaffold(
+        body: Row(
+          children: [
+            SafeArea(
+              child: NavigationRail(
+                extended: constraints.maxWidth >= 600,
+                destinations: [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.home),
+                    label: Text('Home'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.favorite),
+                    label: Text('Favorites'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.sports_gymnastics),
+                    label: Text('Create lifts'),
+                  ),
+                ],
+                selectedIndex: selectedIndex,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                },
               ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: page,
-                ),
+            ),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: page,
               ),
-            ],
-          ),
-        );
-      }
-    );
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -176,7 +167,6 @@ class FavoritesPage extends StatelessWidget {
     );
   }
 }
-
 
 class GeneratorPage extends StatelessWidget {
   @override
