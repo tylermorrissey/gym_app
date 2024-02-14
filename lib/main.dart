@@ -1,71 +1,99 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_app/screens/favorites.dart';
+import 'package:gym_app/screens/create_exercise.dart';
 import 'package:gym_app/screens/home.dart';
-import 'package:provider/provider.dart';
 
-import 'models/favorites.dart';
-
-//firestore stuff
-// var db = FirebaseFirestore.instance;
-// var data = {'favorites.dart': favorites.dart.map((f) => f.toLowerCase().asString)};
-// db
-//     .collection('favorites.dart')
-//     .doc('current')
-//     .set(data, SetOptions(merge: true));
-
-// updateFavorites();
-// db.collection('favorites.dart').get().then((event) {
-// for (var doc in event.docs) {
-// print('${doc.id} => ${doc.data()}');
-// }
-// });
-
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  // FirebaseFirestore.instance.settings = const Settings(
-  //   host: '127.0.0.1:8080',
-  //   sslEnabled: false,
-  //   persistenceEnabled: false,
-  // );
-  runApp(MyApp());
+  await Firebase.initializeApp();
+  FirebaseFirestore.instance.settings = const Settings(
+    host: '127.0.0.1:8080',
+    sslEnabled: false,
+    persistenceEnabled: false,
+  );
+  runApp(ProviderScope(child: MyApp()));
 }
 
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: HomePage.routeName,
-      builder: (context, state) {
-        return const HomePage();
-      },
-      routes: [
-        GoRoute(
-          path: FavoritesPage.routeName,
-          builder: (context, state) {
-            return const FavoritesPage();
-          },
-        ),
-      ],
-    ),
-  ],
-);
-
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp.router(
+      routerConfig: router,
+    );
+  }
+}
+
+class BottomNavigationBarScaffold extends StatefulWidget {
+  const BottomNavigationBarScaffold({super.key, this.child});
+
+  final Widget? child;
+
+  @override
+  State<BottomNavigationBarScaffold> createState() =>
+      _BottomNavigationBarScaffoldState();
+}
+
+class _BottomNavigationBarScaffoldState
+    extends State<BottomNavigationBarScaffold> {
+  int currentIndex = 0;
+
+  void changeTab(int index) {
+    switch (index) {
+      case 0:
+        context.go('/');
+      case 1:
+        context.go('/create_exercise_page');
+    }
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Favorites>(
-      create: (context) => Favorites(),
-      child: MaterialApp.router(
-        title: 'Testing Sample',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          useMaterial3: true,
-        ),
-        routerConfig: _router,
+    return Scaffold(
+      body: widget.child,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: changeTab,
+        backgroundColor: const Color(0xffe0b9f6),
+        currentIndex: currentIndex,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat), label: 'Create Exercise'),
+        ],
       ),
     );
   }
 }
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
+final router = GoRouter(
+  navigatorKey: _rootNavigatorKey,
+  routes: [
+    ShellRoute(
+      navigatorKey: _shellNavigatorKey,
+      builder: (context, state, child) =>
+          BottomNavigationBarScaffold(child: child),
+      routes: [
+        GoRoute(
+          path: '/',
+          parentNavigatorKey: _shellNavigatorKey,
+          builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/create_exercise_page',
+          parentNavigatorKey: _shellNavigatorKey,
+          builder: (context, state) => const CreateExercise(),
+        ),
+      ],
+    )
+  ],
+);

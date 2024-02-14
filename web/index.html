@@ -37,12 +37,11 @@
         const serviceWorkerVersion = null;
     </script>
     <!-- This script adds the flutter initialization JS code -->
-    <script src="../build/web/flutter.js" defer></script>
+    <script src="flutter.js" defer></script>
 </head>
 <body>
 <script>
     window.addEventListener('load', function () {
-        // Download main.dart.js
         _flutter.loader.loadEntrypoint({
             serviceWorker: {
                 serviceWorkerVersion: serviceWorkerVersion,

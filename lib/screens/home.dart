@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/favorites.dart';
-import 'favorites.dart';
-
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   static String routeName = '/';
 
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Testing Sample'),
-        actions: <Widget>[
-          TextButton.icon(
-            onPressed: () {
-              context.go('/${FavoritesPage.routeName}');
-            },
-            icon: const Icon(Icons.favorite_border),
-            label: const Text('Favorites'),
-          ),
-        ],
+        title: const Text('Home'),
       ),
       body: ListView.builder(
-        itemCount: 100,
         cacheExtent: 20.0,
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemBuilder: (context, index) => ItemTile(index),
@@ -35,42 +21,25 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ItemTile extends StatelessWidget {
+class ItemTile extends ConsumerWidget {
   final int itemNo;
 
   const ItemTile(this.itemNo, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var favoritesList = Provider.of<Favorites>(context);
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.primaries[itemNo % Colors.primaries.length],
-        ),
         title: Text(
           'Item $itemNo',
           key: Key('text_$itemNo'),
         ),
         trailing: IconButton(
           key: Key('icon_$itemNo'),
-          icon: favoritesList.items.contains(itemNo)
-              ? const Icon(Icons.favorite)
-              : const Icon(Icons.favorite_border),
+          icon: const Icon(Icons.favorite_border),
           onPressed: () {
-            !favoritesList.items.contains(itemNo)
-                ? favoritesList.add(itemNo)
-                : favoritesList.remove(itemNo);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(favoritesList.items.contains(itemNo)
-                    ? 'Added to favorites.'
-                    : 'Removed from favorites.'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
+            print('pressed the exercise');
           },
         ),
       ),
