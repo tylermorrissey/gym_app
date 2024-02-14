@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gym_app/models/exercise.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gym_app/database.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-part 'create_exercise.g.dart';
-
-@riverpod
-class ExerciseText extends _$ExerciseText {
-  @override
-  String build() => '';
-
-  void changeText(String text) {
-    state = text;
-    print(state);
-  }
-}
+import '../models/exercise.dart';
 
 class CreateExercise extends ConsumerWidget {
   const CreateExercise({super.key});
@@ -30,20 +19,20 @@ class CreateExercise extends ConsumerWidget {
   }
 }
 
-class CreateExerciseFields extends ConsumerWidget {
+class CreateExerciseFields extends HookConsumerWidget {
   const CreateExerciseFields({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final text = ref.watch(exerciseTextProvider.notifier);
-    final textToSave = ref.watch(exerciseTextProvider);
+    final exerciseText = useState('');
     final exerciseAdd = ref.watch(exercisesProvider.notifier);
+    final database = ref.watch(databaseProvider.notifier);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           TextField(
-            onChanged: (value) => text.changeText(value),
+            onChanged: (value) => exerciseText.value = value,
             decoration: const InputDecoration(
               filled: true,
               labelText: 'Name of Exercise',
@@ -55,8 +44,9 @@ class CreateExerciseFields extends ConsumerWidget {
             children: <Widget>[
               TextButton(
                   onPressed: () {
-                    exerciseAdd.add(textToSave);
-                    print(textToSave);
+                    exerciseAdd.add(exerciseText.value);
+                    database.addExercise(exerciseText.value);
+                    print(exerciseText.value);
                   },
                   child: const Text('Submit'))
             ],

@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'create_exercise.dart';
+part of 'database.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$exerciseTextHash() => r'c2b38f9fb1c7b37fe181d61b915252e5a055a97d';
+String _$databaseHash() => r'd518057264bdb3fe23d0816e599b24519c574e67';
 
-/// See also [ExerciseText].
-@ProviderFor(ExerciseText)
-final exerciseTextProvider =
-    AutoDisposeNotifierProvider<ExerciseText, String>.internal(
-  ExerciseText.new,
-  name: r'exerciseTextProvider',
+/// See also [Database].
+@ProviderFor(Database)
+final databaseProvider =
+    AutoDisposeStreamNotifierProvider<Database, Object?>.internal(
+  Database.new,
+  name: r'databaseProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$exerciseTextHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$databaseHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ExerciseText = AutoDisposeNotifier<String>;
+typedef _$Database = AutoDisposeStreamNotifier<Object?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
