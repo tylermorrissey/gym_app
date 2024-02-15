@@ -6,9 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:gym_app/screens/create_exercise.dart';
 import 'package:gym_app/screens/home.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // TODO this only compiles for IOS
   FirebaseFirestore.instance.settings = const Settings(
     host: '127.0.0.1:8080',
