@@ -8,15 +8,30 @@ import 'mock.dart';
 
 void main() {
   group('create exercise tests', () {
-    testWidgets('shows submit button', (tester) async {
-      setupFirebaseAuthMocks();
-      await Firebase.initializeApp();
+    setUpAll(() => firebaseMocks());
+    testWidgets('screen renders correctly', (tester) async {
       await tester.pumpWidget(
           ProviderScope(child: const MaterialApp(home: CreateExercise())));
 
       // await tester.tap(find.text('submit'));
 
       expect(find.text('Submit'), findsOneWidget);
+      expect(find.byKey(Key('exerciseInput')), findsOneWidget);
+    });
+
+    testWidgets('submit a exercise', (tester) async {
+      await tester.pumpWidget(
+          ProviderScope(child: const MaterialApp(home: CreateExercise())));
+
+      // await tester.tap(find.text('submit'));
+
+      expect(find.text('Submit'), findsOneWidget);
+      expect(find.byKey(Key('exerciseInput')), findsOneWidget);
     });
   });
+}
+
+void firebaseMocks() async {
+  setupFirebaseAuthMocks();
+  await Firebase.initializeApp();
 }

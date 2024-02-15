@@ -34,6 +34,7 @@ class CreateExerciseFields extends HookConsumerWidget {
               filled: true,
               labelText: 'Name of Exercise',
             ),
+            key: Key('exerciseInput'),
           ),
           const SizedBox(height: 12.0),
           OverflowBar(
