@@ -1,39 +1,43 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gym_app/screens/home.dart';
-import 'package:provider/provider.dart';
+import 'package:gym_app/database.dart';
+import 'package:gym_app/main.dart';
 
-Widget createHomeScreen() => ChangeNotifierProvider<Favorites>(
-      child: const MaterialApp(
-        home: HomePage(),
-      ),
-    );
+// Widget createHomeScreen() => ConsumerWidget(
+//       child: const MaterialApp(
+//         home: HomePage(),
+//       ),
+//     );
+
+const exerciseCollection = 'exercises';
 
 void main() {
   group('Home Page Widget Tests', () {
-    testWidgets('Testing Scrolling', (tester) async {
-      await tester.pumpWidget(createHomeScreen());
-      expect(find.text('Item 0'), findsOneWidget);
-      await tester.fling(
-        find.byType(ListView),
-        const Offset(0, -200),
-        3000,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('Item 0'), findsNothing);
-    });
+    testWidgets('shows messages', (tester) async {
+      // Populate the fake database.
+      final db = await DatabaseHelper().createDatabase();
 
-    testWidgets('Testing IconButtons', (tester) async {
-      await tester.pumpWidget(createHomeScreen());
-      expect(find.byIcon(Icons.favorite), findsNothing);
-      await tester.tap(find.byIcon(Icons.favorite_border).first);
-      await tester.pumpAndSettle(const Duration(seconds: 1));
-      expect(find.text('Added to favorites.'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite), findsWidgets);
-      await tester.tap(find.byIcon(Icons.favorite).first);
-      await tester.pumpAndSettle(const Duration(seconds: 1));
-      expect(find.text('Removed from favorites.'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite), findsNothing);
+      // Render the widget.
+
+      await tester.pumpWidget(
+        ProviderScope(
+            // ProviderScopes have the exact same "overrides" parameter
+            overrides: [
+              // Same as before
+              databaseProvider.overrideWith(),
+            ],
+            child:
+                const MaterialApp(title: 'Firestore Example', home: MyApp())),
+      );
+      // Let the snapshots stream fire a snapshot.
+      await tester.idle();
+      // Re-render.
+      await tester.pump();
+      // // Verify the output.
+      expect(find.text('Hello world!'), findsOneWidget);
+      expect(find.text('Message 1 of 1'), findsOneWidget);
     });
   });
 }
