@@ -17,9 +17,7 @@ class Database extends _$Database {
   Future<bool> addExercise(String exercise) async {
     _exercises = _firestore.collection('exercises');
     try {
-      await _exercises.add({
-        'exercise': exercise,
-      });
+      await _exercises.doc(exercise).set({'name': exercise});
       return true;
     } catch (e) {
       return Future.error(e);

@@ -30,7 +30,7 @@ class HomePage extends ConsumerWidget {
               itemBuilder: (context, index) {
                 var data = snapshot.data.docs[index].data();
                 return ItemTile(
-                  data['exercise'],
+                  data['name'],
                 );
               },
             );
@@ -57,9 +57,9 @@ class ItemTile extends ConsumerWidget {
         ),
         trailing: IconButton(
           key: Key('icon_$name'),
-          icon: const Icon(Icons.favorite_border),
+          icon: const Icon(Icons.delete_outline),
           onPressed: () {
-            print('pressed the exercise');
+            ref.watch(databaseProvider.notifier).removeExercise(name);
           },
         ),
       ),
