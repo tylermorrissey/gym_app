@@ -10,8 +10,8 @@ class Database extends _$Database {
 
   @override
   Stream build() {
-    Stream exercise = _firestore.collection('exercises').snapshots();
-    return exercise;
+    Stream exercises = _firestore.collection('exercises').snapshots();
+    return exercises;
   }
 
   Future<bool> addExercise(String exercise) async {

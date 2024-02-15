@@ -44,9 +44,10 @@ class CreateExerciseFields extends HookConsumerWidget {
             children: <Widget>[
               TextButton(
                   onPressed: () {
+                    // TODO should this save to DB every time? Any point in storing locally currently?
+                    // TODO maybe only store locally for the list screen?
                     exerciseAdd.add(exerciseText.value);
                     database.addExercise(exerciseText.value);
-                    print(exerciseText.value);
                   },
                   child: const Text('Submit'))
             ],

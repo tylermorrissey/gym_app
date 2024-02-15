@@ -10,9 +10,12 @@ class Exercises extends _$Exercises {
     return exercise;
   }
 
+  Object list() {
+    return state;
+  }
+
   void add(String name) {
     state.add(name);
-    print(state);
   }
 
   void remove(String name) {

@@ -6,7 +6,7 @@ part of 'exercise.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$exercisesHash() => r'82717bf21fa94a048ee3ab046f349abfe55e7e06';
+String _$exercisesHash() => r'b5e483c7603c88828b07b2aabef2f4a1616c05e6';
 
 /// See also [Exercises].
 @ProviderFor(Exercises)
