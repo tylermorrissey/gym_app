@@ -1,16 +1,16 @@
 # gym_app
 
-app for tracking gym stats
+app for making an exercise list at the gym
+- tested in iOS and web, not sure about android and MacOS
+- need to run the firestore emulator to use the app currently
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Exercise list shows a list of exercises
+- You can delete exercises by pressing the trash can
 
-A few resources to get you started if this is your first Flutter project:
+## Create Exercise lets you add another exercise 
+- These are currently setup to save & get from firestore
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Bottom nav uses go_router
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Testing is mostly just for rendering, still wrapping my head around testing (especially testing firebase)
