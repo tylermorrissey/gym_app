@@ -1,8 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'exercise.g.dart';
-
-//TODO Kind of worthless
+//TODO Kind of worthless for now
 // @riverpod
 // class Exercises extends _$Exercises {
 //   @override
@@ -22,4 +18,4 @@ part 'exercise.g.dart';
 //   void remove(String name) {
 //     state.remove(name);
 //   }
-}
+// }
