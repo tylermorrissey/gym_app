@@ -3,8 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gym_app/database.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../models/exercise.dart';
-
 class CreateExercise extends ConsumerWidget {
   const CreateExercise({super.key});
 
@@ -25,7 +23,6 @@ class CreateExerciseFields extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final exerciseText = useState('');
-    final exerciseAdd = ref.watch(exercisesProvider.notifier);
     final database = ref.watch(databaseProvider.notifier);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -44,9 +41,6 @@ class CreateExerciseFields extends HookConsumerWidget {
             children: <Widget>[
               TextButton(
                   onPressed: () {
-                    // TODO should this save to DB every time? Any point in storing locally currently?
-                    // TODO maybe only store locally for the list screen?
-                    exerciseAdd.add(exerciseText.value);
                     database.addExercise(exerciseText.value);
                   },
                   child: const Text('Submit'))

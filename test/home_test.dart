@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gym_app/models/favorites.dart';
 import 'package:gym_app/screens/home.dart';
 import 'package:provider/provider.dart';
 
 Widget createHomeScreen() => ChangeNotifierProvider<Favorites>(
-      create: (context) => Favorites(),
       child: const MaterialApp(
         home: HomePage(),
       ),

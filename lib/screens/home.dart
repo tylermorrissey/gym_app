@@ -13,22 +13,18 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Exercise List'),
       ),
       body: StreamBuilder(
         stream: exDb,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Display a loading indicator when waiting for data.
+            return CircularProgressIndicator();
           } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Display an error message if an error occurs.
+            return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData) {
-            return Text(
-                'No data available'); // Display a message when no data is available.
+            return Text('No data available');
           } else {
-            // return Text(snapshot.data.docs[0].data()['exercise']);
-
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
@@ -37,7 +33,7 @@ class HomePage extends ConsumerWidget {
                   data['exercise'],
                 );
               },
-            ); // Display the latest number when data is available.
+            );
           }
         },
       ),

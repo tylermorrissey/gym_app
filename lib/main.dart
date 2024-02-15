@@ -9,6 +9,7 @@ import 'package:gym_app/screens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // TODO this only compiles for IOS
   FirebaseFirestore.instance.settings = const Settings(
     host: '127.0.0.1:8080',
     sslEnabled: false,
@@ -63,9 +64,10 @@ class _BottomNavigationBarScaffoldState
         backgroundColor: const Color(0xffe0b9f6),
         currentIndex: currentIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat), label: 'Create Exercise'),
+              icon: Icon(Icons.run_circle_outlined), label: 'Exercise List'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle_outline), label: 'Create Exercise'),
         ],
       ),
     );

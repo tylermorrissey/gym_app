@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'exercise.g.dart';
 
+//TODO Kind of worthless
 @riverpod
 class Exercises extends _$Exercises {
   @override
