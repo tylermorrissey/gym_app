@@ -9,33 +9,69 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final exDb = ref.watch(databaseProvider.notifier).build();
+    final exercises = ref.watch(databaseProvider.notifier).build();
+    final workouts = ref.watch(databaseProvider.notifier).listWorkouts();
 
+    // DropdownMenu(dropdownMenuEntries: [
+    //   exDb.map(())
+    //   DropdownMenuEntry(
+    //     value: 'bench',
+    //     label: 'bench',
+    //     enabled: true,
+    //     style: MenuItemButton.styleFrom(
+    //       foregroundColor: Colors.white,
+    //     ),
+    //   ),
+    // ]),
     return Scaffold(
       appBar: AppBar(
         title: Text('Exercise List'),
       ),
-      body: StreamBuilder(
-        stream: exDb,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (!snapshot.hasData) {
-            return Text('No data available');
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                var data = snapshot.data.docs[index].data();
-                return ItemTile(
-                  data['name'],
-                );
+      body: Column(
+        children: [
+          StreamBuilder(
+              stream: workouts,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return Text('No data available');
+                } else {
+                  final entries =
+                      snapshot.data.docs.map<DropdownMenuEntry>((workout) {
+                    return DropdownMenuEntry(
+                        value: workout.id, label: workout.id);
+                  }).toList();
+                  return DropdownMenu(dropdownMenuEntries: entries);
+                }
+              }),
+          Expanded(
+            child: StreamBuilder(
+              stream: exercises,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return Text('No data available');
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      var data = snapshot.data.docs[index].data();
+                      return ItemTile(
+                        data['name'],
+                      );
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }

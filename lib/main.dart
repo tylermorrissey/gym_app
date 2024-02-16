@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_app/screens/create_exercise.dart';
+import 'package:gym_app/screens/create_workout.dart';
 import 'package:gym_app/screens/home.dart';
 
 import 'firebase_options.dart';
@@ -50,6 +51,8 @@ class _BottomNavigationBarScaffoldState
         context.go('/');
       case 1:
         context.go('/create_exercise_page');
+      case 2:
+        context.go('/create_workout_page');
     }
     setState(() {
       currentIndex = index;
@@ -69,6 +72,9 @@ class _BottomNavigationBarScaffoldState
               icon: Icon(Icons.run_circle_outlined), label: 'Exercise List'),
           BottomNavigationBarItem(
               icon: Icon(Icons.add_circle_outline), label: 'Create Exercise'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined),
+              label: 'Create Workout'),
         ],
       ),
     );
@@ -95,6 +101,11 @@ final router = GoRouter(
           path: '/create_exercise_page',
           parentNavigatorKey: _shellNavigatorKey,
           builder: (context, state) => const CreateExercise(),
+        ),
+        GoRoute(
+          path: '/create_workout_page',
+          parentNavigatorKey: _shellNavigatorKey,
+          builder: (context, state) => const CreateWorkout(),
         ),
       ],
     )
